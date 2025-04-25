@@ -6,3 +6,4 @@ python-dotenv
 webrtcvad
 edge-tts
 sounddevice
+ollama

@@ -25,8 +25,16 @@ unzip vosk-model-small-en-us-0.15.zip -d models/
 mv models/vosk-model-small-en-us-0.15 models/vosk-model-small-en-us-0.15
 rm vosk-model-small-en-us-0.15.zip
 
+# Install Ollama application if not already installed
+if ! command -v ollama &> /dev/null
+then
+    echo "Installing Ollama..."
+    curl https://ollama.ai/install.sh | sh
+fi
+
 # Install Python dependencies
 pip3 install -r requirements.txt
 
 echo "Installation complete. Please set up your .env file with:"
 echo "DEEPSEEK_API_KEY=your_api_key_here"
+echo "fro local agent run ollama before hand"

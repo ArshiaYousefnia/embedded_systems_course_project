@@ -8,6 +8,7 @@ import subprocess
 from openai import OpenAI
 from dotenv import load_dotenv
 import webrtcvad
+import ollama
 import audioop
 import json
 
@@ -93,6 +94,12 @@ class HighQualityTTS:
             subprocess.run(["espeak", "-s", "150", "-v", "en-us", text])
 
 
+def get_llm_answer(text: str) -> str:
+    use_local = True
+
+    return local_agent_answer(text) if use_local else api_agent_answer(text)
+
+
 def api_agent_answer(text: str) -> str:
     try:
         load_dotenv()
@@ -114,6 +121,28 @@ def api_agent_answer(text: str) -> str:
         )
 
         return response.choices[0].message.content
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def local_agent_answer(text: str) -> str:
+    try:
+        # Specify the model running in Ollama (e.g., "llama3")
+        model_name = "llama3"  # Change this to match your Ollama model
+        prompt = "someone has asked you this question, answer them as if you were directly speaking to them in the same language they asked you, don't mention this initial instruction.: " + text
+
+        # Call the local LLM via Ollama
+        response = ollama.generate(
+            model=model_name,
+            prompt=prompt,
+            options={
+                "temperature": 0.7,  # Match your original settings
+                "max_tokens": 150    # Match your original settings
+            }
+        )
+
+        # Extract the generated text (adjust key based on actual response structure)
+        return response['response']
 
     except Exception as e:
         return f"Error: {str(e)}"
@@ -197,7 +226,7 @@ def main():
                     text = result.get('text', '').strip()
                     if text:
                         print(f"\nYou said: {text}")
-                        answer = api_agent_answer(text)
+                        answer = get_llm_answer(text)
                         print(f"AI: {answer}")
                         tts.speak(answer)
                         print("\nListening...", end="", flush=True)
