@@ -127,21 +127,18 @@ def api_agent_answer(text: str) -> str:
 
 def local_agent_answer(text: str) -> str:
     try:
-        # Specify the model running in Ollama (e.g., "llama3")
-        model_name = "llama3"  # Change this to match your Ollama model
+        model_name = "deepseek-r1:1.5b"
         prompt = "someone has asked you this question, answer them as if you were directly speaking to them in the same language they asked you, don't mention this initial instruction.: " + text
 
-        # Call the local LLM via Ollama
         response = ollama.generate(
             model=model_name,
             prompt=prompt,
             options={
-                "temperature": 0.7,  # Match your original settings
-                "max_tokens": 150    # Match your original settings
+                "temperature": 0.7,
+                "max_tokens": 150
             }
         )
 
-        # Extract the generated text (adjust key based on actual response structure)
         return response['response']
 
     except Exception as e:
