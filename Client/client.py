@@ -105,7 +105,7 @@ def main():
                 if text:
                     logger.info(f"You said: {text}")
                     try:
-                        with socket.create_connection((FOG_IP, FOG_PORT), timeout=30) as sock:
+                        with socket.create_connection((FOG_IP, FOG_PORT), timeout=60) as sock:
                             sock.sendall(text.encode("utf-8"))
                             with open("response.mp3", "wb") as f:
                                 while True:
@@ -115,6 +115,7 @@ def main():
                                     f.write(chunk)
                         os.system("ffplay -nodisp -autoexit -loglevel quiet response.mp3")
                         os.remove("response.mp3")
+                        logger.info("Client Ready. Speak clearly...")
                     except socket.error as e:
                         logger.error(f"Network error: {e}")
                     except Exception as e:
