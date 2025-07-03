@@ -66,7 +66,9 @@ def local_agent_answer(text):
         response = ollama.generate(
             model="deepseek-r1:1.5b",
             prompt=text,
-            options={"temperature": 0.7, "max_tokens": 150}
+            options={"temperature": 0.7, "max_tokens": 150},
+            think=False,
+            stream=False,
         )
         return response["response"]
     except Exception as e:
@@ -90,7 +92,8 @@ def main():
                         continue
                     logger.info(f"Received: {data}")
 
-                    answer = get_llm_answer(data)
+                    prompt = "someone has asked you this question, answer them as if you were directly speaking to them in the same language they asked you, don't mention this initial instruction.: " + data
+                    answer = get_llm_answer(prompt)
                     logger.info(f"AI: {answer}")
                     tts.speak(answer, out_file="response.mp3")
 
