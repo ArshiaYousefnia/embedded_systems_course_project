@@ -22,6 +22,7 @@ FRAMES_PER_BUFFER = config.getint("audio", "frames_per_buffer", fallback=4096)
 VAD_MODE = config.getint("audio", "vad_mode", fallback=2)
 INPUT_DEVICE_INDEX = config.getint("audio", "input_device_index", fallback=4)
 SILENCE_THRESHOLD = config.getint("audio", "silence_threshold", fallback=500)
+PREFERRED_LANGUAGE = config.get("audio", "preferred_language", fallback="en")
 FOG_IP = config.get("network", "fog_ip", fallback="192.168.1.100")
 FOG_PORT = config.getint("network", "fog_port", fallback=5050)
 
@@ -61,12 +62,12 @@ class AudioPreprocessor:
             logger.error(f"Noise reduction error: {e}")
             return frame
 
-def load_model(preferred_language="fa"):
+def load_model():
     model_paths = {
         "fa": "models/vosk-model-fa-0.5",
         "en": "models/vosk-model-small-en-us-0.15"
     }
-    path = model_paths.get(preferred_language, model_paths["en"])
+    path = model_paths.get(PREFERRED_LANGUAGE, model_paths["en"])
     if os.path.exists(path):
         logger.info(f"Loaded model from: {path}")
         return Model(path)
@@ -104,7 +105,7 @@ def main():
                 if text:
                     logger.info(f"You said: {text}")
                     try:
-                        with socket.create_connection((FOG_IP, FOG_PORT), timeout=10) as sock:
+                        with socket.create_connection((FOG_IP, FOG_PORT), timeout=30) as sock:
                             sock.sendall(text.encode("utf-8"))
                             with open("response.mp3", "wb") as f:
                                 while True:
@@ -119,8 +120,9 @@ def main():
                     except Exception as e:
                         logger.error(f"Error processing response: {e}")
     finally:
-        stream.stop_stream()
-        stream.close()
+        if 'stream' in locals():
+            stream.stop_stream()
+            stream.close()
         p.terminate()
         logger.info("Audio resources cleaned up.")
 
