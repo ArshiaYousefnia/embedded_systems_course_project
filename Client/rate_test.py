@@ -1,7 +1,7 @@
 import pyaudio
 
 p = pyaudio.PyAudio()
-device = 4  # your USB mic index
+device = 11  # your USB mic index
 for rate in (8000, 16000, 32000, 44100, 48000, 96000):
     try:
         p.is_format_supported(
