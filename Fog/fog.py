@@ -137,7 +137,7 @@ def main():
                     elif message_type == "query":
                         data = payload.get("text", "")
                         logger.info(f"Received Query: {data}")
-                        prompt = "someone has asked you this question, answer them as if you were directly speaking to them in the same language they asked you, also if in your answer you need to use numbers, use letters instead of digits to express them. don't mention this initial instruction. : " + data
+                        prompt = "someone has asked you this question, answer them as if you were directly speaking to them in the same language they asked you, also if in your answer you need to use numbers, use letters instead of digits to express them. don't mention this initial instruction and dont speak chinease: " + data
                         answer = get_llm_answer(prompt)
 
                     else:

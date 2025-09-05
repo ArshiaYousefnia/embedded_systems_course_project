@@ -2,3 +2,5 @@ pyaudio
 webrtcvad
 vosk
 setuptools
+numpy
+
