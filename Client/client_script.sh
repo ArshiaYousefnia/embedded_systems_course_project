@@ -48,7 +48,7 @@ pip install -r client_requirements.txt
 # Define Vosk model URLs and paths
 MODELS_DIR="models"
 VOSK_MODELS=(
-  "vosk-model-fa-0.5:https://alphacephei.com/vosk/models/vosk-model-fa-0.5.zip"
+  "vosk-model-small-fa-0.5:https://alphacephei.com/vosk/models/vosk-model-small-fa-0.5.zip"
   "vosk-model-small-en-us-0.15:https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
 )
 
