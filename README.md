@@ -5,7 +5,7 @@
 Sharif University of Technology - Computer Engineering Faculty  
 **Course:** Embedded Systems  
 **Professor:** Dr. Ansari  
-**Date:** Summer 2023  
+**Date:** Summer 2025  
 **Team Members:** Arshia Yousefnia, Ali Majidi, Sadegh Sargaran
 
 ## 📋 Table of Contents
